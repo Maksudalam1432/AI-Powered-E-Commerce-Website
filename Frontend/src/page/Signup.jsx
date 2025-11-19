@@ -1,0 +1,116 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
+import { useContext } from "react";
+import { authdatacontext } from "../context/Authcontext";
+import axios from "axios";
+
+function Signup() {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [Name,setName]=useState("")
+  const [Email,setEmail]=useState("")
+  const [Password,setPassword]=useState("")
+  const {serverUrl}=useContext(authdatacontext)
+
+  const handle=async(e)=>{
+e.preventDefault();
+ try{
+     const result=await axios.post(serverUrl+'/api/auth/signup',{
+        Name,Email,Password
+     },{withCredentials:true})
+     console.log(result.data)
+ }
+ catch(error){
+    console.log(error)
+ }
+   
+  }
+
+  return (
+    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500 px-4">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-6">
+        
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
+          Create Account
+        </h1>
+
+        <button className="mt-4 flex items-center justify-center gap-2 bg-gray-900 text-white py-3 rounded-lg w-full hover:bg-black transition">
+          <img
+            className="h-6"
+            src="https://imgs.search.brave.com/023_3Tu7qfEXOqwKcTSm3Zjfh_XK-At-dk3PMSaB1pE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA2Lzk1LzEzLzgx/LzM2MF9GXzY5NTEz/ODE0OV9HZFJJUHhT/b1hVMGE2VGdINlNs/M1o5VEdhT1NqekhC/ZC5qcGc"
+            alt=""
+          />
+          Signup with Google
+        </button>
+
+        <div className="flex items-center my-4">
+          <div className="flex-grow h-px bg-gray-300" />
+          <span className="px-2 text-gray-500 text-sm">OR</span>
+          <div className="flex-grow h-px bg-gray-300" />
+        </div>
+
+        <form  onSubmit={handle}  className="flex flex-col gap-4">
+          <input
+          value={Name}
+          onChange={(e)=>setName(e.target.value)}
+            type="text"
+            placeholder="Full Name"
+            className="border-2 border-gray-300 rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-purple-500"
+          />
+
+          <input
+            type="email"
+            value={Email}
+            onChange={(e)=>setEmail(e.target.value)}
+            placeholder="Email Address"
+            className="border-2 border-gray-300 rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-purple-500"
+          />
+
+
+          <div className="relative">
+            <input
+            value={Password}
+            onChange={(e)=>setPassword(e.target.value)}
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="border-2 border-gray-300 rounded-lg py-3 px-4 w-full outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
+            <span
+              className="absolute top-3 right-4 cursor-pointer text-gray-600 text-xl"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <IoEyeOffSharp /> : <IoEyeOutline />}
+            </span>
+          </div>
+
+          <button className="bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg text-lg shadow-md transition">
+            Sign Up
+          </button>
+        </form>
+
+        <p
+          className="text-center text-gray-600 text-sm mt-5 cursor-pointer"
+          onClick={() => navigate("/login")}
+        >
+          Already have an account?{" "}
+          <span className="text-purple-600 font-semibold hover:underline">
+            Login
+          </span>
+        </p>
+          <p
+          className="text-center text-gray-600 text-sm mt-5 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+         
+          <span className="text-purple-600 font-semibold hover:underline ">
+            Home Page
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default Signup;
