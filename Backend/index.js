@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import DBconnect from "./config/db.js"
 import cookieparser from "cookie-parser"
 import Authroute from "./route/Authroute.js"
+import userRoutes from "./route/UserRoutes.js"
 dotenv.config()
 let app=express()
 app.use(express.json())
@@ -15,6 +16,7 @@ app.use(cors({
 let PORT=process.env.PORT ||4000
 
 app.use("/api/auth", Authroute);
+app.use("/api/user",userRoutes);
 
 
 
